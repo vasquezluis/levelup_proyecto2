@@ -2,9 +2,10 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", ({ headers: { host } }, res) => {
   const menu = {
-    items: `http://${req.headers.host}/api/v1/items`,
+    docs: `http://${host}/api-docs`,
+    marcas: `http://${host}/marcas`,
   };
 
   res.json({ message: "API menu", menu });
