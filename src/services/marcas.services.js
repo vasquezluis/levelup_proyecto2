@@ -4,7 +4,7 @@ export const getBrandsService = () => {
   return brands;
 };
 
-export const getActiveBrandsService = (id) => {
+export const getActiveBrandsService = () => {
   const activeBrands = "Listado de marcas activas";
 
   return activeBrands;
