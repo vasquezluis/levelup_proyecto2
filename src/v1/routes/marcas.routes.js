@@ -8,6 +8,7 @@ import {
   getItems,
   updateItem,
 } from "../../controllers/marcas.controllers.js";
+import { createValidation } from "../../validators/marcas.validator.js";
 
 const router = Router();
 
@@ -95,7 +96,7 @@ router.get("/marcas/activos", getActiveItems);
  * @swagger
  * /marcas/{id}:
  *  get:
- *    summary: Retorna una marca por el id 
+ *    summary: Retorna una marca por el id
  *    tags: [Marcas]
  *    parameters:
  *      - in: path
@@ -103,7 +104,7 @@ router.get("/marcas/activos", getActiveItems);
  *        schema:
  *          type: string
  *          required: true
- *          description: El id de la marca 
+ *          description: El id de la marca
  *    responses:
  *      200:
  *        description: Información de la marca por el Id
@@ -112,7 +113,7 @@ router.get("/marcas/activos", getActiveItems);
  *            schema:
  *              $ref: '#/components/schemas/Marca'
  *      404:
- *        description: No se encontró la marca 
+ *        description: No se encontró la marca
  */
 router.get("/marcas/:id", getItem);
 
@@ -120,7 +121,7 @@ router.get("/marcas/:id", getItem);
  * @swagger
  * /marcas:
  *  post:
- *    summary: Crear una nueva marca 
+ *    summary: Crear una nueva marca
  *    tags: [Marcas]
  *    requestBody:
  *      required: true
@@ -130,21 +131,21 @@ router.get("/marcas/:id", getItem);
  *            $ref: '#/components/schemas/Marca'
  *    responses:
  *      201:
- *        description: La marca ha sido creada correctamente 
+ *        description: La marca ha sido creada correctamente
  *        content:
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Marca'
  *      500:
- *        description: Ha ocurrido un error 
+ *        description: Ha ocurrido un error
  */
-router.post("/marcas", createItem);
+router.post("/marcas", createValidation, createItem);
 
 /**
  * @swagger
  * /marcas/{id}:
  *  put:
- *    summary: Actualizar una marca por el id 
+ *    summary: Actualizar una marca por el id
  *    tags: [Marcas]
  *    parameters:
  *      - in: path
@@ -152,7 +153,7 @@ router.post("/marcas", createItem);
  *        schema:
  *          type: string
  *        required: true
- *        description: Id de la marca 
+ *        description: Id de la marca
  *    requestBody:
  *      required: true
  *      content:
@@ -161,15 +162,15 @@ router.post("/marcas", createItem);
  *            $ref: '#/components/schemas/Marca'
  *    responses:
  *      201:
- *        description: La marca ha sido actualizada 
+ *        description: La marca ha sido actualizada
  *        content:
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Marca'
  *      404:
- *        description: La marca no ha sido encontrada 
+ *        description: La marca no ha sido encontrada
  *      500:
- *        description: Error en la actualización 
+ *        description: Error en la actualización
  */
 router.put("/marcas/:id", updateItem);
 
@@ -177,15 +178,15 @@ router.put("/marcas/:id", updateItem);
  * @swagger
  * /marcas/{id}:
  *  delete:
- *    summary: Eliminar una marca por el id 
+ *    summary: Eliminar una marca por el id
  *    tags: [Marcas]
  *    parameters:
  *      - $ref: '#/components/parameters/marcaId'
  *    responses:
  *      200:
- *        description: La marca ha sido eliminada 
+ *        description: La marca ha sido eliminada
  *      404:
- *        description: La marca no ha sido encontrada 
+ *        description: La marca no ha sido encontrada
  *
  */
 router.delete("/marcas/:id", deleteItem);
