@@ -39,7 +39,6 @@ export const getItem = (req, res) => {
 
     response.success(res, 200, `Datos de marca ${id}`, result);
   } catch (error) {
-    console.log(error);
     response.error(res, error);
   }
 };
