@@ -1,3 +1,4 @@
+import createHttpError from "http-errors";
 import { response } from "../common/response.js";
 
 import {
@@ -37,6 +38,10 @@ export const getItem = (req, res) => {
 
     const result = getLineService(id);
 
+    if (!result) {
+      response.error(res, new createHttpError.NotFound());
+    }
+
     response.success(res, 200, `Datos de linea ${id}`, result);
   } catch (error) {
     response.error(res, error);
@@ -60,9 +65,13 @@ export const updateItem = (req, res) => {
     const {
       params: { id },
     } = req;
-    const { nombre, descripcion } = req.body;
+    const { nombre, activo, descripcion } = req.body;
 
-    const result = updateLineService(id, { nombre, descripcion });
+    const result = updateLineService(id, { nombre, activo, descripcion });
+
+    if (!result) {
+      response.error(res, new createHttpError.NotFound());
+    }
 
     response.success(res, 201, `Linea ${id} actualizada`, result);
   } catch (error) {
@@ -77,6 +86,10 @@ export const deleteItem = (req, res) => {
     } = req;
 
     const result = deleteLineService(id);
+
+    if (!result) {
+      response.error(res, new createHttpError.NotFound());
+    }
 
     response.success(res, 200, `Linea ${id} eliminada`, result);
   } catch (error) {
