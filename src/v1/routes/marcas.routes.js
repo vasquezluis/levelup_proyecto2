@@ -8,7 +8,11 @@ import {
   getItems,
   updateItem,
 } from "../../controllers/marcas.controllers.js";
-import { createValidation } from "../../validators/marcas.validator.js";
+import {
+  createValidation,
+  paramsValidation,
+  updateValidation,
+} from "../../validators/marcas.validator.js";
 
 const router = Router();
 
@@ -27,24 +31,28 @@ const router = Router();
  *        - descripcion
  *      properties:
  *        id:
- *          type: string
+ *          type: integer
  *          description: Id auto-generado para marcas
  *        nombre:
  *          type: string
  *          description: El nombre de la marca
+ *        activo:
+ *          type: boolean
+ *          description: El estado de la marca
  *        descripcion:
  *          type: string
  *          description: La descripcion de la marca
  *      example:
  *        id: 1
  *        nombre: Adidas
+ *        activo: true
  *        descripcion: Compañia multinacional alemana
  *  parameters:
  *    marcaId:
  *      in: path
  *      name: id
  *      schema:
- *        type: string
+ *        type: integer
  *      required: true
  *      description: El id de la marca
  */
@@ -102,7 +110,7 @@ router.get("/marcas/activos", getActiveItems);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *          required: true
  *          description: El id de la marca
  *    responses:
@@ -115,7 +123,7 @@ router.get("/marcas/activos", getActiveItems);
  *      404:
  *        description: No se encontró la marca
  */
-router.get("/marcas/:id", getItem);
+router.get("/marcas/:id", paramsValidation, getItem);
 
 /**
  * @swagger
@@ -136,6 +144,12 @@ router.get("/marcas/:id", getItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Marca'
+ *      403:
+ *        description: Los datos del body no son correctos
+ *        content:
+ *          application/json:
+ *            shcema:
+ *              $ref: '#/components/schemas/Marca'
  *      500:
  *        description: Ha ocurrido un error
  */
@@ -151,7 +165,7 @@ router.post("/marcas", createValidation, createItem);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer 
  *        required: true
  *        description: Id de la marca
  *    requestBody:
@@ -167,12 +181,18 @@ router.post("/marcas", createValidation, createItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Marca'
+ *      403:
+ *        description: Los datos del body no son correctos
+ *        content:
+ *          application/json:
+ *            shcema:
+ *              $ref: '#/components/schemas/Marca'
  *      404:
  *        description: La marca no ha sido encontrada
  *      500:
  *        description: Error en la actualización
  */
-router.put("/marcas/:id", updateItem);
+router.put("/marcas/:id", paramsValidation, updateValidation, updateItem);
 
 /**
  * @swagger
@@ -189,6 +209,6 @@ router.put("/marcas/:id", updateItem);
  *        description: La marca no ha sido encontrada
  *
  */
-router.delete("/marcas/:id", deleteItem);
+router.delete("/marcas/:id", paramsValidation, deleteItem);
 
 export default router;
