@@ -8,7 +8,11 @@ import {
   getItems,
   updateItem,
 } from "../../controllers/lineas.controllers.js";
-import { createValidation } from "../../validators/lineas.validator.js";
+import {
+  createValidation,
+  paramsValidation,
+  updateValidation,
+} from "../../validators/lineas.validator.js";
 
 const router = Router();
 
@@ -27,24 +31,28 @@ const router = Router();
  *        - descripcion
  *      properties:
  *        id:
- *          type: string
+ *          type: integer
  *          description: Id auto-generado para lineas
  *        nombre:
  *          type: string
  *          description: El nombre de la linea
+ *        activo:
+ *          type: boolean
+ *          description: El estado de la linea
  *        descripcion:
  *          type: string
  *          description: La descripcion de la linea
  *      example:
  *        id: 1
  *        nombre: Playera
+ *        activo: true
  *        descripcion: Prenda de mangas cortas
  *  parameters:
  *    lineaId:
  *      in: path
  *      name: id
  *      schema:
- *        type: string
+ *        type: integer
  *      required: true
  *      description: El id de la linea
  */
@@ -102,7 +110,7 @@ router.get("/lineas/activos", getActiveItems);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *          required: true
  *          description: El id de la linea
  *    responses:
@@ -115,7 +123,7 @@ router.get("/lineas/activos", getActiveItems);
  *      404:
  *        description: No se encontró la linea
  */
-router.get("/lineas/:id", getItem);
+router.get("/lineas/:id", paramsValidation, getItem);
 
 /**
  * @swagger
@@ -136,6 +144,12 @@ router.get("/lineas/:id", getItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Los datos del body no son correctos
+ *        content:
+ *          application/json:
+ *            shcema:
+ *              $ref: '#/components/schemas/Linea'
  *      500:
  *        description: Ha ocurrido un error
  */
@@ -151,7 +165,7 @@ router.post("/lineas", createValidation, createItem);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: Id de la linea
  *    requestBody:
@@ -167,12 +181,18 @@ router.post("/lineas", createValidation, createItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Los datos del body no son correctos
+ *        content:
+ *          application/json:
+ *            shcema:
+ *              $ref: '#/components/schemas/Linea'
  *      404:
  *        description: La linea no ha sido encontrada
  *      500:
  *        description: Error en la actualización
  */
-router.put("/lineas/:id", updateItem);
+router.put("/lineas/:id", paramsValidation, updateValidation, updateItem);
 
 /**
  * @swagger
@@ -189,6 +209,6 @@ router.put("/lineas/:id", updateItem);
  *        description: La linea no ha sido encontrada
  *
  */
-router.delete("/lineas/:id", deleteItem);
+router.delete("/lineas/:id", paramsValidation, deleteItem);
 
 export default router;
