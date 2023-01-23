@@ -1,37 +1,75 @@
+import databaseLineas from "../database/lineas.js";
+
 export const getLinesService = () => {
-  const lines = "Listado de todas lineas";
+  const lines = databaseLineas;
 
   return lines;
 };
 
 export const getActiveLinesService = () => {
-  const activeLines = "Listado de lineas activas";
+  const activeLines = databaseLineas.filter((item) => item.activo == true);
 
   return activeLines;
 };
 
 export const getLineService = (id) => {
-  const line = `Linea ${id}`;
+  const line = databaseLineas.find((item) => item.id === parseInt(id));
 
   return line;
 };
 
-export const createLineService = (body) => {
-  const newLine = body;
+export const createLineService = ({ nombre, descripcion }) => {
+  const id = Math.max(...databaseLineas.map((item) => item.id)) + 1;
+
+  const newLine = {
+    id,
+    nombre,
+    activo: true,
+    descripcion,
+  };
+
+  databaseLineas.push(newLine);
 
   return newLine;
 };
 
-export const updateLineService = (id, { nombre, descripcion }) => {
-  console.log(nombre, descripcion);
+export const updateLineService = (id, { nombre, activo, descripcion }) => {
+  const lineFound = databaseLineas.find((item) => item.id === parseInt(id));
 
-  const updatedLine = `Linea ${id} actualizada con los datos: ${nombre} ${descripcion}`;
+  const oldActive = lineFound.activo;
 
-  return updatedLine;
+  let newActive = null;
+
+  if (lineFound) {
+    /**
+     * * Crear nuevo valor de activo
+     * ! activo pueder tener valor o no, segun los datos a actualizar
+     */
+    if (activo !== undefined) {
+      newActive = activo;
+    }
+    if (activo == undefined) {
+      newActive = oldActive;
+    }
+
+    nombre ? (lineFound.nombre = nombre) : null;
+    lineFound.activo = newActive;
+    descripcion ? (lineFound.descripcion = descripcion) : null;
+
+    return lineFound;
+  } else {
+    return null;
+  }
 };
 
 export const deleteLineService = (id) => {
-  const deletedLine = `Linea ${id} eliminada`;
+  const lineFound = databaseLineas.find((item) => item.id === parseInt(id));
 
-  return deletedLine;
+  if (lineFound) {
+    lineFound.activo = false;
+
+    return lineFound;
+  } else {
+    return null;
+  }
 };
