@@ -6,9 +6,9 @@ import swaggerUI from "swagger-ui-express";
 
 import indexRoutes from "./v1/routes/index.js";
 // import ingresosRoutes from "./v1/routes/ingresos.routes.js";
-// import inventarioRoutes from "./v1/routes/inventario.routes.js";
 import lineasRoutes from "./v1/routes/lineas.routes.js";
 import marcasRoutes from "./v1/routes/marcas.routes.js";
+import productosRoutes from "./v1/routes/productos.routes.js";
 // import ventasRoutes from "./v1/routes/ventas.routes.js";
 import notFoundRoutes from "./v1/routes/notFound.routes.js";
 
@@ -35,9 +35,9 @@ app.use(express.json());
  */
 app.use(indexRoutes);
 // app.use(ingresosRoutes);
-// app.use(inventarioRoutes);
 app.use(lineasRoutes);
 app.use(marcasRoutes);
+app.use(productosRoutes);
 // app.use(ventasRoutes);
 app.use(notFoundRoutes);
 
