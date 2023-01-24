@@ -44,9 +44,12 @@ export const updateBrandService = (id, { nombre, activo, descripcion }) => {
     /**
      * * Crear nuevo valor de activo
      * ! activo pueder tener valor o no, segun los datos a actualizar
+     * ! el usuario puede enviar un string
+     * ? convertir un string 'false' a booleano false
      */
+
     if (activo !== undefined) {
-      newActive = activo;
+      newActive = activo === "true";
     }
     if (activo == undefined) {
       newActive = oldActive;
