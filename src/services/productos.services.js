@@ -48,39 +48,40 @@ export const updateProductService = (
   id,
   { nombre, activo, descripcion, precio, marca, linea }
 ) => {
-  const productFound = databaseProductos.find(
-    (item) => item.id === parseInt(id)
-  );
+  try {
+    const productFound = databaseProductos.find(
+      (item) => item.id === parseInt(id)
+    );
 
-  const oldActive = productFound.activo;
+    if (productFound) {
+      /**
+       * * Crear nuevo valor de activo
+       * ! activo pueder tener valor o no, segun los datos a actualizar
+       * ! el usuario puede enviar un string
+       * ? convertir un string 'false' a booleano false
+       */
+      const oldActive = productFound.activo;
+      let newActive = null;
+      if (activo !== undefined) {
+        newActive = activo === "true";
+      }
+      if (activo == undefined) {
+        newActive = oldActive;
+      }
 
-  let newActive = null;
+      nombre ? (productFound.nombre = nombre) : null;
+      productFound.activo = newActive;
+      descripcion ? (productFound.descripcion = descripcion) : null;
+      precio ? (productFound.precio = parseFloat(precio)) : null;
+      marca ? (productFound.marca = parseInt(marca)) : null;
+      linea ? (productFound.linea = parseInt(linea)) : null;
 
-  if (productFound) {
-    /**
-     * * Crear nuevo valor de activo
-     * ! activo pueder tener valor o no, segun los datos a actualizar
-     * ! el usuario puede enviar un string
-     * ? convertir un string 'false' a booleano false
-     */
-
-    if (activo !== undefined) {
-      newActive = activo === "true";
+      return productFound;
+    } else {
+      return null;
     }
-    if (activo == undefined) {
-      newActive = oldActive;
-    }
-
-    nombre ? (productFound.nombre = nombre) : null;
-    productFound.activo = newActive;
-    descripcion ? (productFound.descripcion = descripcion) : null;
-    precio ? (productFound.precio = parseFloat(precio)) : null;
-    marca ? (productFound.marca = parseInt(marca)) : null;
-    linea ? (productFound.linea = parseInt(linea)) : null;
-
-    return productFound;
-  } else {
-    return null;
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
