@@ -39,9 +39,9 @@ export const getItem = (req, res) => {
 
     if (!result) {
       response.error(res, new createHttpError.NotFound());
+    } else {
+      response.success(res, 200, `Datos de producto ${id}`, result);
     }
-
-    response.success(res, 200, `Datos de producto ${id}`, result);
   } catch (error) {
     response.error(res, error);
   }
@@ -83,9 +83,9 @@ export const updateItem = (req, res) => {
 
     if (!result) {
       response.error(res, new createHttpError.NotFound());
+    } else {
+      response.success(res, 201, `Producto ${id} actualizado`, result);
     }
-
-    response.success(res, 201, `Producto ${id} actualizado`, result);
   } catch (error) {
     response.error(res, error);
   }
