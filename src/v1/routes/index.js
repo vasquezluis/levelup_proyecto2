@@ -9,6 +9,7 @@ router.get("/", ({ headers: { host } }, res) => {
     marcas: `http://${host}/marcas`,
     productos: `http://${host}/productos`,
     stock: `http://${host}/stock`,
+    ventas: `http://${host}/ventas`,
   };
 
   res.json({ message: "API menu", menu });
