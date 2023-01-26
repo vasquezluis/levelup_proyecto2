@@ -144,7 +144,7 @@ router.get("/lineas/:id", paramsValidation, getItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Linea'
- *      403:
+ *      400:
  *        description: Los datos del body no son correctos
  *        content:
  *          application/json:
@@ -181,7 +181,7 @@ router.post("/lineas", createValidation, createItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Linea'
- *      403:
+ *      400:
  *        description: Los datos del body no son correctos
  *        content:
  *          application/json:
