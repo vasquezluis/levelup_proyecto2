@@ -64,9 +64,9 @@ export const createItem = (req, res) => {
         statusCode: 409,
         message: `El producto ${producto} ya tiene stock registrado.`,
       });
+    } else {
+      response.success(res, 201, `Stock creado`, result);
     }
-
-    response.success(res, 201, `Stock creado`, result);
   } catch (error) {
     response.error(res, error);
   }
