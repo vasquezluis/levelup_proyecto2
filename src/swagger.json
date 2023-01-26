@@ -2,7 +2,7 @@
   "definition": {
     "openapi": "3.0.0",
     "info": {
-      "title": "API de la empresa Deportes S.A.",
+      "title": "API: Deportes S.A.",
       "version": "1.0.0",
       "description": "API simple para operaciones de inventario y ventas"
     },
