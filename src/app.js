@@ -9,8 +9,8 @@ import indexRoutes from "./v1/routes/index.js";
 import lineasRoutes from "./v1/routes/lineas.routes.js";
 import marcasRoutes from "./v1/routes/marcas.routes.js";
 import productosRoutes from "./v1/routes/productos.routes.js";
-// import ventasRoutes from "./v1/routes/ventas.routes.js";
 import stockRoutes from "./v1/routes/stock.routes.js";
+import ventasRoutes from "./v1/routes/ventas.routes.js";
 import notFoundRoutes from "./v1/routes/notFound.routes.js";
 
 const app = express();
@@ -39,8 +39,8 @@ app.use(indexRoutes);
 app.use(lineasRoutes);
 app.use(marcasRoutes);
 app.use(productosRoutes);
-// app.use(ventasRoutes);
 app.use(stockRoutes);
+app.use(ventasRoutes);
 app.use(notFoundRoutes);
 
 export default app;
