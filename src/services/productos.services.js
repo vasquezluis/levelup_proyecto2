@@ -1,4 +1,5 @@
 import databaseProductos from "../database/productos.js";
+import databaseStock from "../database/stock.js";
 
 export const getProductsService = () => {
   const products = databaseProductos;
@@ -16,8 +17,19 @@ export const getActiveProductsService = () => {
 
 export const getProductService = (id) => {
   const product = databaseProductos.find((item) => item.id === parseInt(id));
+  const stock = databaseStock.find((item) => item.producto == parseInt(id));
 
-  return product;
+  /**
+   * * Crear un nuevo objeto con el stock (si existe)
+   * ! no modifica la base de datos de productos
+   */
+  const productWithStock = product;
+
+  if (stock) {
+    productWithStock["stock"] = stock.stock;
+  }
+
+  return productWithStock;
 };
 
 export const createProductService = ({
