@@ -144,7 +144,7 @@ router.get("/stock/:id", paramsValidation, getItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Stock'
- *      403:
+ *      400:
  *        description: Los datos del body no son correctos
  *        content:
  *          application/json:
@@ -187,7 +187,7 @@ router.post("/stock", createValidation, createItem);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Stock'
- *      403:
+ *      400:
  *        description: Los datos del body no son correctos
  *        content:
  *          application/json:
