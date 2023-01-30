@@ -31,7 +31,7 @@ export const createToken = (req, res) => {
      * ? el cuarto parametro es un callback con la respuesta
      */
 
-    const expiresTime = "2m";
+    const expiresTime = "5m";
 
     jwt.sign(
       { user: response },
