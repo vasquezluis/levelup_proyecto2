@@ -5,7 +5,7 @@ const users = [
     password: 123456789,
     emal: "admin@gmail.com",
     roles: ["admin"],
-    permissions: ["admin", "sales", "reports"],
+    permissions: ["admin"],
   },
   {
     id: 2,
@@ -13,7 +13,15 @@ const users = [
     password: 123456789,
     emal: "luisvasquez@gmail.com",
     roles: ["vendedor"],
-    permissions: ["sales", "reports"],
+    permissions: ["sales", "products", "brands", "lines"],
+  },
+  {
+    id: 3,
+    user: "juanperez",
+    password: 123456789,
+    emal: "juanperez@gmail.com",
+    roles: ["bodeguero"],
+    permissions: ["entries", "brands", "lines", "stock", "products"],
   },
 ];
 
