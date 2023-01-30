@@ -12,7 +12,7 @@ import {
   updateValidation,
 } from "../../validators/ingresos.validator.js";
 
-import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+import { verifyToken } from "../../middlewares/verifyEntriesToken.middlewares.js";
 
 const router = Router();
 
