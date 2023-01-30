@@ -5,6 +5,7 @@ const router = Router();
 router.get("/", ({ headers: { host } }, res) => {
   const menu = {
     docs: `http://${host}/api-docs`,
+    ingresos: `http://${host}/ingresos`,
     lineas: `http://${host}/lineas`,
     marcas: `http://${host}/marcas`,
     productos: `http://${host}/productos`,
