@@ -14,6 +14,8 @@ import {
   updateValidation,
 } from "../../validators/stock.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -47,6 +49,12 @@ const router = Router();
  *        activo: true
  *        stock: 250
  *        producto: 2
+ *  securitySchemes:
+ *    stockAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    stockId:
  *      in: path
@@ -55,6 +63,8 @@ const router = Router();
  *        type: integer
  *      required: true
  *      description: El id del stock
+ * security:
+ *  - stockAuth: []
  */
 
 /**
@@ -70,6 +80,8 @@ const router = Router();
  *   get:
  *     summary: Retorna la lista de todos los stocks
  *     tags: [Stocks]
+ *     security:
+ *       - stockAuth: []
  *     responses:
  *       200:
  *        description: Lista de todos los stocks
@@ -79,8 +91,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Stock'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/stock", getItems);
+router.get("/stock", verifyToken, getItems);
 
 /**
  * @swagger
@@ -88,6 +102,8 @@ router.get("/stock", getItems);
  *   get:
  *     summary: Retorna la lista de todos los stocks activos
  *     tags: [Stocks]
+ *     security:
+ *       - stockAuth: []
  *     responses:
  *       200:
  *        description: Lista de los stocks activos
@@ -97,8 +113,10 @@ router.get("/stock", getItems);
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Stock'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/stock/activos", getActiveItems);
+router.get("/stock/activos", verifyToken, getActiveItems);
 
 /**
  * @swagger
@@ -106,6 +124,8 @@ router.get("/stock/activos", getActiveItems);
  *  get:
  *    summary: Retorna un stock por el id
  *    tags: [Stocks]
+ *    security:
+ *      - stockAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -120,10 +140,12 @@ router.get("/stock/activos", getActiveItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Stock'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró el stock
  */
-router.get("/stock/:id", paramsValidation, getItem);
+router.get("/stock/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -131,6 +153,8 @@ router.get("/stock/:id", paramsValidation, getItem);
  *  post:
  *    summary: Crear un nuevo stock
  *    tags: [Stocks]
+ *    security:
+ *      - stockAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -150,6 +174,8 @@ router.get("/stock/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Stock'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      409:
  *        description: El producto ya está registrado.
  *        content:
@@ -159,7 +185,7 @@ router.get("/stock/:id", paramsValidation, getItem);
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/stock", createValidation, createItem);
+router.post("/stock", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -167,6 +193,8 @@ router.post("/stock", createValidation, createItem);
  *  put:
  *    summary: Actualizar un stock por el id
  *    tags: [Stocks]
+ *    security:
+ *      - stockAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -193,6 +221,8 @@ router.post("/stock", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Stock'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      409:
  *        description: El producto ya está registrado.
  *        content:
@@ -204,7 +234,13 @@ router.post("/stock", createValidation, createItem);
  *      500:
  *        description: Error en la actualización
  */
-router.put("/stock/:id", paramsValidation, updateValidation, updateItem);
+router.put(
+  "/stock/:id",
+  verifyToken,
+  paramsValidation,
+  updateValidation,
+  updateItem
+);
 
 /**
  * @swagger
@@ -212,11 +248,15 @@ router.put("/stock/:id", paramsValidation, updateValidation, updateItem);
  *  delete:
  *    summary: Eliminar un stock por el id
  *    tags: [Stocks]
+ *    security:
+ *      - stockAuth: []
  *    parameters:
  *      - $ref: '#/components/parameters/stockId'
  *    responses:
  *      200:
  *        description: El stock ha sido eliminado
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: El stock no ha sido encontrado
  *

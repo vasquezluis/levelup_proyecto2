@@ -12,6 +12,8 @@ import {
   updateValidation,
 } from "../../validators/ingresos.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -44,6 +46,12 @@ const router = Router();
  *        id: 1
  *        producto: 1
  *        cantidad: 50
+ *  securitySchemes:
+ *    ingresosAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    ingresoId:
  *      in: path
@@ -52,6 +60,8 @@ const router = Router();
  *        type: integer
  *      required: true
  *      description: El id del ingreso
+ * security:
+ *  - ingresosAuth: []
  */
 
 /**
@@ -67,6 +77,8 @@ const router = Router();
  *   get:
  *     summary: Retorna los registros de productos
  *     tags: [Ingresos]
+ *     security:
+ *      - ingresosAuth: []
  *     responses:
  *       200:
  *        description: Lista ingresos
@@ -76,8 +88,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Ingreso'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/ingresos", getItems);
+router.get("/ingresos", verifyToken, getItems);
 
 /**
  * @swagger
@@ -85,6 +99,8 @@ router.get("/ingresos", getItems);
  *  get:
  *    summary: Retorna un registro de productos por el id
  *    tags: [Ingresos]
+ *    security:
+ *      - ingresosAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -99,10 +115,12 @@ router.get("/ingresos", getItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Ingreso'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró el registro
  */
-router.get("/ingresos/:id", paramsValidation, getItem);
+router.get("/ingresos/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -110,6 +128,8 @@ router.get("/ingresos/:id", paramsValidation, getItem);
  *  post:
  *    summary: Crear un nuevo registro de productos
  *    tags: [Ingresos]
+ *    security:
+ *      - ingresosAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -129,12 +149,14 @@ router.get("/ingresos/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Ingreso'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: El producto no ha sido encontrado
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/ingresos", createValidation, createItem);
+router.post("/ingresos", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -142,6 +164,8 @@ router.post("/ingresos", createValidation, createItem);
  *  put:
  *    summary: Actualizar un registro de producto
  *    tags: [Ingresos]
+ *    security:
+ *      - ingresosAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -168,11 +192,19 @@ router.post("/ingresos", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: Registro de producto no encontrado
  *      500:
  *        description: Error en la actualización
  */
-router.put("/ingresos/:id", paramsValidation, updateValidation, updateItem);
+router.put(
+  "/ingresos/:id",
+  verifyToken,
+  paramsValidation,
+  updateValidation,
+  updateItem
+);
 
 export default router;

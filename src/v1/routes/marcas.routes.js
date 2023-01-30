@@ -14,6 +14,8 @@ import {
   updateValidation,
 } from "../../validators/marcas.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -47,6 +49,12 @@ const router = Router();
  *        nombre: Adidas
  *        activo: true
  *        descripcion: Compañia multinacional alemana
+ *  securitySchemes:
+ *    marcasAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    marcaId:
  *      in: path
@@ -70,6 +78,8 @@ const router = Router();
  *   get:
  *     summary: Retorna la lista de todas las marcas
  *     tags: [Marcas]
+ *     security:
+ *      - marcasAuth: []
  *     responses:
  *       200:
  *        description: Lista de todas las marcas
@@ -79,8 +89,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Marca'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/marcas", getItems);
+router.get("/marcas", verifyToken, getItems);
 
 /**
  * @swagger
@@ -88,6 +100,8 @@ router.get("/marcas", getItems);
  *   get:
  *     summary: Retorna la lista de todas las marcas activas
  *     tags: [Marcas]
+ *     security:
+ *       - marcasAuth: []
  *     responses:
  *       200:
  *        description: Lista de las marcas activas
@@ -97,8 +111,10 @@ router.get("/marcas", getItems);
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Marca'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/marcas/activos", getActiveItems);
+router.get("/marcas/activos", verifyToken, getActiveItems);
 
 /**
  * @swagger
@@ -106,6 +122,8 @@ router.get("/marcas/activos", getActiveItems);
  *  get:
  *    summary: Retorna una marca por el id
  *    tags: [Marcas]
+ *    security:
+ *      - marcasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -120,10 +138,12 @@ router.get("/marcas/activos", getActiveItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Marca'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró la marca
  */
-router.get("/marcas/:id", paramsValidation, getItem);
+router.get("/marcas/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -131,6 +151,8 @@ router.get("/marcas/:id", paramsValidation, getItem);
  *  post:
  *    summary: Crear una nueva marca
  *    tags: [Marcas]
+ *    security:
+ *      - marcasAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -150,10 +172,12 @@ router.get("/marcas/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Marca'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/marcas", createValidation, createItem);
+router.post("/marcas", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -161,11 +185,13 @@ router.post("/marcas", createValidation, createItem);
  *  put:
  *    summary: Actualizar una marca por el id
  *    tags: [Marcas]
+ *    security:
+ *      - marcasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
- *          type: integer 
+ *          type: integer
  *        required: true
  *        description: Id de la marca
  *    requestBody:
@@ -187,12 +213,20 @@ router.post("/marcas", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Marca'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: La marca no ha sido encontrada
  *      500:
  *        description: Error en la actualización
  */
-router.put("/marcas/:id", paramsValidation, updateValidation, updateItem);
+router.put(
+  "/marcas/:id",
+  verifyToken,
+  paramsValidation,
+  updateValidation,
+  updateItem
+);
 
 /**
  * @swagger
@@ -200,15 +234,19 @@ router.put("/marcas/:id", paramsValidation, updateValidation, updateItem);
  *  delete:
  *    summary: Eliminar una marca por el id
  *    tags: [Marcas]
+ *    security:
+ *      - marcasAuth: []
  *    parameters:
  *      - $ref: '#/components/parameters/marcaId'
  *    responses:
  *      200:
  *        description: La marca ha sido eliminada
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: La marca no ha sido encontrada
  *
  */
-router.delete("/marcas/:id", paramsValidation, deleteItem);
+router.delete("/marcas/:id", verifyToken, paramsValidation, deleteItem);
 
 export default router;

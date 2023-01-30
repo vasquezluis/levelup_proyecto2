@@ -13,6 +13,8 @@ import {
   updateValidation,
 } from "../../validators/productos.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -61,6 +63,12 @@ const router = Router();
  *        precio: 300.50
  *        marca: 1
  *        linea: 1
+ *  securitySchemes:
+ *    productosAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    productoId:
  *      in: path
@@ -69,6 +77,8 @@ const router = Router();
  *        type: integer
  *      required: true
  *      description: El id del producto
+ * security:
+ *  - productosAuth: []
  */
 
 /**
@@ -84,6 +94,8 @@ const router = Router();
  *   get:
  *     summary: Retorna la lista de todos los productos
  *     tags: [Productos]
+ *     security:
+ *      - productosAuth: []
  *     responses:
  *       200:
  *        description: Lista de todos los productos
@@ -93,8 +105,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Producto'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/productos", getItems);
+router.get("/productos", verifyToken, getItems);
 
 /**
  * @swagger
@@ -102,6 +116,8 @@ router.get("/productos", getItems);
  *   get:
  *     summary: Retorna la lista de todos los productos activos
  *     tags: [Productos]
+ *     security:
+ *       - productosAuth: []
  *     responses:
  *       200:
  *        description: Lista de los productos activos
@@ -111,8 +127,10 @@ router.get("/productos", getItems);
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Producto'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/productos/activos", getActiveItems);
+router.get("/productos/activos", verifyToken, getActiveItems);
 
 /**
  * @swagger
@@ -120,6 +138,8 @@ router.get("/productos/activos", getActiveItems);
  *  get:
  *    summary: Retorna un producto por el id
  *    tags: [Productos]
+ *    security:
+ *      - productosAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -134,10 +154,12 @@ router.get("/productos/activos", getActiveItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Producto'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró el producto
  */
-router.get("/productos/:id", paramsValidation, getItem);
+router.get("/productos/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -145,6 +167,8 @@ router.get("/productos/:id", paramsValidation, getItem);
  *  post:
  *    summary: Crear un nuevo producto
  *    tags: [Productos]
+ *    security:
+ *      - productosAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -164,10 +188,12 @@ router.get("/productos/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Producto'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/productos", createValidation, createItem);
+router.post("/productos", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -175,6 +201,8 @@ router.post("/productos", createValidation, createItem);
  *  put:
  *    summary: Actualizar un producto por el id
  *    tags: [Productos]
+ *    security:
+ *      - productosAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -201,12 +229,20 @@ router.post("/productos", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Producto'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: El producto no ha sido encontrado
  *      500:
  *        description: Error en la actualización
  */
-router.put("/productos/:id", paramsValidation, updateValidation, updateItem);
+router.put(
+  "/productos/:id",
+  verifyToken,
+  paramsValidation,
+  updateValidation,
+  updateItem
+);
 
 /**
  * @swagger
@@ -214,15 +250,19 @@ router.put("/productos/:id", paramsValidation, updateValidation, updateItem);
  *  delete:
  *    summary: Eliminar un producto por el id
  *    tags: [Productos]
+ *    security:
+ *      - productosAuth: []
  *    parameters:
  *      - $ref: '#/components/parameters/productoId'
  *    responses:
  *      200:
  *        description: El producto ha sido eliminado
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: El producto no ha sido encontrado
  *
  */
-router.delete("/productos/:id", paramsValidation, deleteItem);
+router.delete("/productos/:id", verifyToken, paramsValidation, deleteItem);
 
 export default router;

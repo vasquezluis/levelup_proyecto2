@@ -12,6 +12,8 @@ import {
   updateValidation,
 } from "../../validators/ventas.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -45,11 +47,17 @@ const router = Router();
  *          description: El id del producto a vender
  *        fecha_registro:
  *          type: string
- *          description: La fecha de registro de la venta 
+ *          description: La fecha de registro de la venta
  *      example:
  *        id: 1
  *        cantidad: 2
  *        producto: 1
+ *  securitySchemes:
+ *    ventasAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    ventaId:
  *      in: path
@@ -73,6 +81,8 @@ const router = Router();
  *   get:
  *     summary: Retorna la lista de todas las ventas
  *     tags: [Ventas]
+ *     security:
+ *       - ventasAuth: []
  *     responses:
  *       200:
  *        description: Lista de todas las ventas
@@ -82,8 +92,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Venta'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/ventas", getItems);
+router.get("/ventas", verifyToken, getItems);
 
 /**
  * @swagger
@@ -91,6 +103,8 @@ router.get("/ventas", getItems);
  *  get:
  *    summary: Retorna una venta por el id
  *    tags: [Ventas]
+ *    security:
+ *      - ventasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -105,10 +119,12 @@ router.get("/ventas", getItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Venta'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró la venta
  */
-router.get("/ventas/:id", paramsValidation, getItem);
+router.get("/ventas/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -116,6 +132,8 @@ router.get("/ventas/:id", paramsValidation, getItem);
  *  post:
  *    summary: Registra una nueva venta
  *    tags: [Ventas]
+ *    security:
+ *      - ventasAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -135,12 +153,14 @@ router.get("/ventas/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Venta'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
- *        description: Id de producto no encontrado 
+ *        description: Id de producto no encontrado
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/ventas", createValidation, createItem);
+router.post("/ventas", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -148,6 +168,8 @@ router.post("/ventas", createValidation, createItem);
  *  put:
  *    summary: Actualizar una venta por el id
  *    tags: [Ventas]
+ *    security:
+ *      - ventasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -174,11 +196,13 @@ router.post("/ventas", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Venta'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: La venta no ha sido encontrada
  *      500:
  *        description: Error en la actualización
  */
-router.put("/ventas/:id", updateValidation, updateItem);
+router.put("/ventas/:id", verifyToken, updateValidation, updateItem);
 
 export default router;

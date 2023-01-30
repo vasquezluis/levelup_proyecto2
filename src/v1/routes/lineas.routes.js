@@ -14,6 +14,8 @@ import {
   updateValidation,
 } from "../../validators/lineas.validator.js";
 
+import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+
 const router = Router();
 
 /**
@@ -47,6 +49,12 @@ const router = Router();
  *        nombre: Playera
  *        activo: true
  *        descripcion: Prenda de mangas cortas
+ *  securitySchemes:
+ *    lineasAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *      description: "Token de acceso tipo Bearer, ejemplo: 'abcde12345'"
  *  parameters:
  *    lineaId:
  *      in: path
@@ -55,6 +63,8 @@ const router = Router();
  *        type: integer
  *      required: true
  *      description: El id de la linea
+ * security:
+ *  - lineasAuth: []
  */
 
 /**
@@ -70,6 +80,8 @@ const router = Router();
  *   get:
  *     summary: Retorna la lista de todas las lineas
  *     tags: [Lineas]
+ *     security:
+ *      - lineasAuth: []
  *     responses:
  *       200:
  *        description: Lista de todas las lineas
@@ -79,8 +91,10 @@ const router = Router();
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Linea'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/lineas", getItems);
+router.get("/lineas", verifyToken, getItems);
 
 /**
  * @swagger
@@ -88,6 +102,8 @@ router.get("/lineas", getItems);
  *   get:
  *     summary: Retorna la lista de todas las lineas activas
  *     tags: [Lineas]
+ *     security:
+ *       - lineasAuth: []
  *     responses:
  *       200:
  *        description: Lista de las lineas activas
@@ -97,8 +113,10 @@ router.get("/lineas", getItems);
  *              type: array
  *              items:
  *               $ref: '#/components/schemas/Linea'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
  */
-router.get("/lineas/activos", getActiveItems);
+router.get("/lineas/activos", verifyToken, getActiveItems);
 
 /**
  * @swagger
@@ -106,6 +124,8 @@ router.get("/lineas/activos", getActiveItems);
  *  get:
  *    summary: Retorna una linea por el id
  *    tags: [Lineas]
+ *    security:
+ *      - lineasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -120,10 +140,12 @@ router.get("/lineas/activos", getActiveItems);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: No se encontró la linea
  */
-router.get("/lineas/:id", paramsValidation, getItem);
+router.get("/lineas/:id", verifyToken, paramsValidation, getItem);
 
 /**
  * @swagger
@@ -131,6 +153,8 @@ router.get("/lineas/:id", paramsValidation, getItem);
  *  post:
  *    summary: Crear una nueva linea
  *    tags: [Lineas]
+ *    security:
+ *      - lineasAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -150,10 +174,12 @@ router.get("/lineas/:id", paramsValidation, getItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      500:
  *        description: Ha ocurrido un error
  */
-router.post("/lineas", createValidation, createItem);
+router.post("/lineas", verifyToken, createValidation, createItem);
 
 /**
  * @swagger
@@ -161,6 +187,8 @@ router.post("/lineas", createValidation, createItem);
  *  put:
  *    summary: Actualizar una linea por el id
  *    tags: [Lineas]
+ *    security:
+ *      - lineasAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -187,12 +215,20 @@ router.post("/lineas", createValidation, createItem);
  *          application/json:
  *            shcema:
  *              $ref: '#/components/schemas/Linea'
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: La linea no ha sido encontrada
  *      500:
  *        description: Error en la actualización
  */
-router.put("/lineas/:id", paramsValidation, updateValidation, updateItem);
+router.put(
+  "/lineas/:id",
+  verifyToken,
+  paramsValidation,
+  updateValidation,
+  updateItem
+);
 
 /**
  * @swagger
@@ -200,15 +236,19 @@ router.put("/lineas/:id", paramsValidation, updateValidation, updateItem);
  *  delete:
  *    summary: Eliminar una linea por el id
  *    tags: [Lineas]
+ *    security:
+ *      - lineasAuth: []
  *    parameters:
  *      - $ref: '#/components/parameters/lineaId'
  *    responses:
  *      200:
  *        description: La linea ha sido eliminada
+ *      403:
+ *        description: Token de autorización inexistente, inválido o expirado
  *      404:
  *        description: La linea no ha sido encontrada
  *
  */
-router.delete("/lineas/:id", paramsValidation, deleteItem);
+router.delete("/lineas/:id", verifyToken, paramsValidation, deleteItem);
 
 export default router;
