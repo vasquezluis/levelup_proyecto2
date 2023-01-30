@@ -5,7 +5,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 
 import indexRoutes from "./v1/routes/index.js";
-// import ingresosRoutes from "./v1/routes/ingresos.routes.js";
+import ingresosRoutes from "./v1/routes/ingresos.routes.js";
 import lineasRoutes from "./v1/routes/lineas.routes.js";
 import marcasRoutes from "./v1/routes/marcas.routes.js";
 import productosRoutes from "./v1/routes/productos.routes.js";
@@ -35,7 +35,7 @@ app.use(express.json());
  * * routes
  */
 app.use(indexRoutes);
-// app.use(ingresosRoutes);
+app.use(ingresosRoutes);
 app.use(lineasRoutes);
 app.use(marcasRoutes);
 app.use(productosRoutes);
