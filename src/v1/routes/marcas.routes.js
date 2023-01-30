@@ -14,7 +14,7 @@ import {
   updateValidation,
 } from "../../validators/marcas.validator.js";
 
-import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+import { verifyToken } from "../../middlewares/verifyBrandsToken.middlewares.js";
 
 const router = Router();
 

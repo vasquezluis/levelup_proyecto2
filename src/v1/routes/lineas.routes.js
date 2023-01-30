@@ -14,7 +14,7 @@ import {
   updateValidation,
 } from "../../validators/lineas.validator.js";
 
-import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+import { verifyToken } from "../../middlewares/verifyLinesToken.middlewares.js";
 
 const router = Router();
 

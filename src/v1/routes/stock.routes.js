@@ -14,7 +14,7 @@ import {
   updateValidation,
 } from "../../validators/stock.validator.js";
 
-import { verifyToken } from "../../middlewares/veryfyToken.middleware.js";
+import { verifyToken } from "../../middlewares/verifyStocksToken.middlewares.js";
 
 const router = Router();
 
