@@ -27,9 +27,9 @@ http://ec2-3-144-43-245.us-east-2.compute.amazonaws.com
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`PORT`: e.g., 3000
+`PORT`: e.g., 8080
 
-`SECRET`: <secret for jsonwebtoken> e.g., 123456789qwertyuiop
+`SECRET`: secret key for jsonwebtoken e.g., 123456789qwertyuiop
 
 
 ## Run Locally
