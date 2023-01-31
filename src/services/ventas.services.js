@@ -1,6 +1,7 @@
 import databaseVentas from "../database/ventas.js";
 import databaseProducto from "../database/productos.js";
 import databaseStock from "../database/stock.js";
+import { excelGenerator } from "../utils/excelGenerator.js";
 
 export const getSalesService = () => {
   const sales = databaseVentas;
@@ -55,7 +56,7 @@ export const createSaleService = ({ cantidad, producto }) => {
           subtotal,
           montoTotal,
           producto: parseInt(producto),
-          fecha_registro: `${date}-${month}-${year}`,
+          fecha_registro: `${month}/${date}/${year}`,
         };
 
         databaseVentas.push(newSale);
@@ -106,6 +107,16 @@ export const updateSaleService = (id, { cantidad }) => {
     } else {
       return null;
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const generateReportService = (name, res) => {
+  try {
+    let db = databaseVentas;
+
+    excelGenerator(db, name, res);
   } catch (error) {
     console.log(error.message);
   }
