@@ -8,6 +8,11 @@ Jsonwebtoken authentication and endpoint access control for users based on permi
 API documentation with Swagger UI and body validations using express-validator.
 
 
+## Demo (AWS)
+
+http://ec2-3-144-43-245.us-east-2.compute.amazonaws.com
+
+
 ## Authors
 
 - [@vasquezluis](https://www.github.com/vasquezluis)
