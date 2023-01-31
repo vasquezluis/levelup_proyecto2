@@ -5,7 +5,7 @@ let ventas = [
     subtotal: 300,
     montoTotal: 600,
     producto: 1,
-    fecha_registro: "25-1-2023",
+    fecha_registro: "1/25/2023",
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ let ventas = [
     subtotal: 300,
     montoTotal: 1500,
     producto: 1,
-    fecha_registro: "25-1-2023",
+    fecha_registro: "1/25/2023",
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ let ventas = [
     subtotal: 550,
     montoTotal: 1650,
     producto: 3,
-    fecha_registro: "25-1-2023",
+    fecha_registro: "1/25/2023",
   },
 ];
 
