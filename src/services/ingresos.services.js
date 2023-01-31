@@ -1,5 +1,6 @@
 import databaseIngresos from "../database/ingresos.js";
 import databaseStock from "../database/stock.js";
+import { excelGenerator } from "../utils/excelGenerator.js";
 
 export const getEntriesService = () => {
   const entries = databaseIngresos;
@@ -35,7 +36,7 @@ export const createEntryService = ({ producto, cantidad }) => {
         id,
         producto: parseInt(producto),
         cantidad: parseInt(cantidad),
-        fecha_registro: `${date}-${month}-${year}`,
+        fecha_registro: `${month}/${date}/${year}`,
       };
 
       /**
@@ -91,6 +92,16 @@ export const updateEntryService = (id, { cantidad }) => {
     } else {
       return null;
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const generateReportService = (name, res) => {
+  try {
+    let db = databaseIngresos;
+
+    excelGenerator(db, name, res);
   } catch (error) {
     console.log(error.message);
   }
