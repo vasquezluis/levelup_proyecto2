@@ -58,3 +58,13 @@ Start the server
 
 ![App Screenshot](https://res.cloudinary.com/dh01roref/image/upload/v1675180410/samples/projects/project2LU-api-docs_yvhppm.png)
 
+
+## FAQ
+
+#### Node version
+
+v16.17.1
+
+#### NPM version
+
+8.15.0
