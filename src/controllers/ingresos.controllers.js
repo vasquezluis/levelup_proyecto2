@@ -2,6 +2,7 @@ import createHttpError from "http-errors";
 import { response } from "../common/response.js";
 import {
   createEntryService,
+  generateReportService,
   getEntriesService,
   getiEntryService,
   updateEntryService,
@@ -68,6 +69,14 @@ export const updateItem = (req, res) => {
     } else {
       response.success(res, 201, `Ingreso ${id} actualizado`, result);
     }
+  } catch (error) {
+    response.error(res, error);
+  }
+};
+
+export const generateReport = async (req, res) => {
+  try {
+    generateReportService("Reporte de ingresos de productos", res);
   } catch (error) {
     response.error(res, error);
   }
