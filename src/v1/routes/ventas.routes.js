@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   createItem,
+  generateReport,
   getItem,
   getItems,
   updateItem,
@@ -96,6 +97,28 @@ const router = Router();
  *        description: Token de autorización inexistente, inválido o expirado
  */
 router.get("/ventas", verifyToken, getItems);
+
+/**
+ * @swagger
+ * /ventas/reporte:
+ *   get:
+ *     summary: Crear el reporte de ventas en formato excel
+ *     tags: [Ventas]
+ *     security:
+ *       - ventasAuth: []
+ *     responses:
+ *       200:
+ *        description: Reporte de ventas
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *               $ref: '#/components/schemas/Venta'
+ *       403:
+ *        description: Token de autorización inexistente, inválido o expirado
+ */
+router.get("/ventas/reporte", verifyToken, generateReport);
 
 /**
  * @swagger
