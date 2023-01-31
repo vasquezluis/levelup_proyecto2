@@ -2,6 +2,7 @@ import createHttpError from "http-errors";
 import { response } from "../common/response.js";
 import {
   createSaleService,
+  generateReportService,
   getSaleService,
   getSalesService,
   updateSaleService,
@@ -88,6 +89,14 @@ export const updateItem = (req, res) => {
         response.success(res, 201, `Venta ${id} actualizada`, result);
       }
     }
+  } catch (error) {
+    response.error(res, error);
+  }
+};
+
+export const generateReport = async (req, res) => {
+  try {
+    generateReportService("Reporte de ventas", res);
   } catch (error) {
     response.error(res, error);
   }
