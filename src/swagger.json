@@ -8,7 +8,7 @@
     },
     "servers": [
       {
-        "url": "http://ec2-3-144-43-245.us-east-2.compute.amazonaws.com:3000"
+        "url": "http://localhost:3000"
       }
     ]
   },
