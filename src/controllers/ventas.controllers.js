@@ -75,10 +75,7 @@ export const updateItem = (req, res) => {
     } = req;
     const { cantidad } = req.body;
 
-    const result = updateSaleService(id, {
-      cantidad,
-      producto,
-    });
+    const result = updateSaleService(id, cantidad);
 
     if (!result) {
       response.error(res, new createHttpError.NotFound());
