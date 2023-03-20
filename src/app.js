@@ -19,7 +19,7 @@ const app = express();
 /**
  * * swagger config
  */
-import swaggerOptionsFile from "./swagger.json" assert { type: "json" };
+import swaggerOptionsFile from "./swagger.json";
 const specs = swaggerJSDoc(swaggerOptionsFile);
 // swaggerOptionsFile.definition.servers[0].url = headerChanged;
 // console.log(req.params)
