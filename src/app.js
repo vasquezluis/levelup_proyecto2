@@ -36,7 +36,7 @@ const swaggerOptionsFile = {
       },
     ],
   },
-  apis: ["./src/v1/routes/*.js"],
+  apis: [`${__dirname}/src/v1/routes/*.js`],
 };
 const specs = swaggerJSDoc(swaggerOptionsFile);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
