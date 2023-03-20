@@ -22,6 +22,10 @@ const app = express();
 // import swaggerOptionsFile from "./swagger.json" assert { type: "json" };
 // import { readFileSync } from "fs";
 // const swaggerOptionsFile = JSON.parse(readFileSync("./swagger.json"));
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const swaggerOptionsFile = {
   definition: {
     openapi: "3.0.0",
@@ -36,8 +40,9 @@ const swaggerOptionsFile = {
       },
     ],
   },
-  apis: [`${__dirname}/src/v1/routes/*.js`],
+  apis: [`${__dirname}/v1/routes/*.js`],
 };
+console.log(__dirname)
 const specs = swaggerJSDoc(swaggerOptionsFile);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
