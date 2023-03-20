@@ -20,11 +20,25 @@ const app = express();
  * * swagger config
  */
 // import swaggerOptionsFile from "./swagger.json" assert { type: "json" };
-import { readFileSync } from "fs";
-const swaggerOptionsFile = JSON.parse(readFileSync("./swagger.json"));
+// import { readFileSync } from "fs";
+// const swaggerOptionsFile = JSON.parse(readFileSync("./swagger.json"));
+swaggerOptionsFile = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API: Deportes S.A.",
+      version: "1.0.0",
+      description: "API simple para operaciones de inventario y ventas",
+    },
+    servers: [
+      {
+        url: "https://levelup-project2-backend.onrender.com",
+      },
+    ],
+  },
+  apis: ["./src/v1/routes/*.js"],
+};
 const specs = swaggerJSDoc(swaggerOptionsFile);
-// swaggerOptionsFile.definition.servers[0].url = headerChanged;
-// console.log(req.params)
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 /**
