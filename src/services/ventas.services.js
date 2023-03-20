@@ -71,7 +71,7 @@ export const createSaleService = ({ cantidad, producto }) => {
   }
 };
 
-export const updateSaleService = (id, { cantidad }) => {
+export const updateSaleService = (id, cantidad) => {
   try {
     const saleFound = databaseVentas.find((item) => item.id === parseInt(id));
 
@@ -97,10 +97,10 @@ export const updateSaleService = (id, { cantidad }) => {
          */
 
         saleFound.cantidad = parseInt(cantidad);
-        stockFound.stock = parseInt(cantidad);
-
         const newMontoTotal = saleFound.subtotal * parseInt(cantidad);
         saleFound.montoTotal = newMontoTotal;
+
+        stockFound.stock = totalStock - parseInt(cantidad);
 
         return saleFound;
       }
