@@ -22,7 +22,7 @@ const app = express();
 // import swaggerOptionsFile from "./swagger.json" assert { type: "json" };
 // import { readFileSync } from "fs";
 // const swaggerOptionsFile = JSON.parse(readFileSync("./swagger.json"));
-swaggerOptionsFile = {
+const swaggerOptionsFile = {
   definition: {
     openapi: "3.0.0",
     info: {
